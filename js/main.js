@@ -1,32 +1,45 @@
-document.querySelector('#start').addEventListener('click', statGatheringData())
 
 class WeatherData{
     constructor(){
-        // this.local = localTemp,
-        this.marsMaxTemp = ""
-        this.marsMinTemp = ""
-        this.marsPressure = ""
+        this.localMinTemp = ''
+        this.localMaxTemp = ''
+        this.localPressure = ''
+        this.marsMaxTemp = ''
+        this.marsMinTemp = ''
+        this.marsPressure = ''
     }
-    setMartianData(latestMax,latestMin,latestPressure){
+    async fetchData() {
+        const talkingPoint = "https://api.maas2.apollorion.com/"
+        let APIobject = await fetch(talkingPoint)
+        if (APIobject.status !== 200) {
+            console.log(`Error: ${APIobject.status}`)
+        } else {
+            let APIresult = await APIobject.json()
+            console.log(APIresult)
+            this.setMarsWeather(APIresult.max_temp,APIresult.min_temp,APIresult.pressure)
+        }
+    }
+    setMarsWeather(latestMax,latestMin,latestPressure){
         this.marsMaxTemp = latestMax
         this.marsMinTemp = latestMin
-        this.marspressure = latestPressure
+        this.marsPressure = latestPressure
+        this.setMarsDataIntoDOM()
     }    
+    setMarsDataIntoDOM(){
+        const marsMinDOM = document.querySelector('#marsMin')
+        const marsMaxDOM = document.querySelector('#marsMax')
+        const marsPressureDOM = document.querySelector('#marsPressure')
+        marsMinDOM.innerText = this.marsMinTemp
+        marsMaxDOM.innerText = this.marsMaxTemp
+        marsPressureDOM.innerText = this.marsPressure
+
+    }
 }
 
-function statGatheringData(){
-    const talkingPoint = "https://api.maas2.apollorion.com/"
-    setMarsData(talkingPoint)
-}
-async function setMarsData(file){
-    let APIobject = await fetch(file)
-    if(!APIobject.ok){
-        throw new Error(console.log(APIobject.status))
-    }
-    let APIresult = await APIobject.json()
-    console.log(APIresult.max_temp)
-     await setMarsData(APIresult.max_temp,APIresult.min_temp,APIresult.pressure)
-}
+document.querySelector('#start').addEventListener('click',() => {
+    const weatherData = new WeatherData()
+    weatherData.fetchData()
+})
 
 // https://maas2.apollorion.com/#/Latest/get_
 // used wesite for mars data
