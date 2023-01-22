@@ -1,6 +1,14 @@
 
-class WeatherData{
-    constructor(){
+const localMinDOM = document.querySelector('#localMin')
+const localMaxDOM = document.querySelector('#localMax')
+const localPressureDOM = document.querySelector('#localPressure')
+const marsMinDOM = document.querySelector('#marsMin')
+const marsMaxDOM = document.querySelector('#marsMax')
+const marsPressureDOM = document.querySelector('#marsPressure')
+
+class WeatherData {
+
+    constructor() {
         this.localMinTemp = ''
         this.localMaxTemp = ''
         this.localPressure = ''
@@ -8,88 +16,102 @@ class WeatherData{
         this.marsMinTemp = ''
         this.marsPressure = ''
     }
+
     async fetchMarsData() {
         const talkingPoint = "https://api.maas2.apollorion.com/"
-        let APIobject = await fetch(talkingPoint)
+        const APIobject = await fetch(talkingPoint)
+
         if (APIobject.status !== 200) {
             console.log(`Error: ${APIobject.status}`)
         } else {
             let APIresult = await APIobject.json()
             console.log(APIresult)
-            this.setMarsWeather(APIresult.max_temp,APIresult.min_temp,APIresult.pressure)
+            this.setMarsWeather(APIresult.max_temp, APIresult.min_temp, APIresult.pressure)
         }
     }
-    async fetchEarthData(latitude,longitude) {
+
+    async fetchEarthData(latitude, longitude) {
         const APIkey = 'c01863ea5cc73a1143508657512cc6e1'
-        let latAndLong = `lat=${latitude}&lon=${longitude}`
+        const latAndLong = `lat=${latitude}&lon=${longitude}`
         const talkingPoint = `https://api.openweathermap.org/data/2.5/weather?${latAndLong}&appid=${APIkey}&units=metric`
+
         console.log(talkingPoint)
+
         let APIobject = await fetch(talkingPoint)
         if (APIobject.status !== 200) {
             console.log(`Error: ${APIobject.status}`)
         } else {
             let APIresult = await APIobject.json()
             console.log(APIresult)
-            this.setLocalWeather(APIresult.main.temp_max,APIresult.main.temp_min,APIresult.main.pressure)
+            this.setLocalWeather(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure)
         }
     }
-    setMarsWeather(latestMax,latestMin,latestPressure){
+
+    setMarsWeather(latestMax, latestMin, latestPressure) {
         this.marsMaxTemp = latestMax
         this.marsMinTemp = latestMin
         this.marsPressure = latestPressure
         this.setMarsDataIntoDOM()
-    }    
-    setMarsDataIntoDOM(){
-        const marsMinDOM = document.querySelector('#marsMin')
-        const marsMaxDOM = document.querySelector('#marsMax')
-        const marsPressureDOM = document.querySelector('#marsPressure')
+    }
+
+    setMarsDataIntoDOM() {
         marsMinDOM.innerText = this.marsMinTemp
         marsMaxDOM.innerText = this.marsMaxTemp
         marsPressureDOM.innerText = this.marsPressure
-
     }
-    setLocalWeather(latestMax,latestMin,latestPressure){
+
+    setLocalWeather(latestMax, latestMin, latestPressure) {
         this.localMaxTemp = latestMax
         this.localMinTemp = latestMin
         this.localPressure = latestPressure
         this.setLocalDataIntoDOM()
-    }    
-    setLocalDataIntoDOM(){
-        const localMinDOM = document.querySelector('#localMin')
-        const localMaxDOM = document.querySelector('#localMax')
-        const localPressureDOM = document.querySelector('#localPressure')
+    }
+
+    setLocalDataIntoDOM() {
         localMinDOM.innerText = this.localMinTemp
         localMaxDOM.innerText = this.localMaxTemp
         localPressureDOM.innerText = this.localPressure
+    }
 
-    }
-    numberTrim(num){
-        return +(num.toFixed(4))
+    numberTrim(num) {
+        return num[0] == '-' ? num.slice(0, 6) : num.slice(0, 5)
     }
 }
+
 if ('geolocation' in navigator) {
-        console.log('geolocation is available')
-    }else{
-        console.log("geolocation IS NOT available")
+    console.log('geolocation is available')
+}else{
+    console.log("geolocation IS NOT available")
 }
+
 navigator.geolocation.getCurrentPosition((position) => {
     const weatherDataLocal = new WeatherData()
+
     weatherDataLocal.fetchEarthData(position.coords.latitude, position.coords.longitude)
 })
 
-document.querySelector('#startMars').addEventListener('click',() => {
+document.querySelector('#startMars').addEventListener('click', () => {
     const weatherDataMars = new WeatherData()
+
     weatherDataMars.fetchMarsData()
 })
 
-document.querySelector('#startEarth').addEventListener('click',() => {
+document.querySelector('#startEarth').addEventListener('click', () => {
     const weatherDataEarth = new WeatherData()
-    let long = document.querySelector('#longitude').value,
-        lat = document.querySelector('#latitude').value
-        // trimmedLong = weatherDataEarth.numberTrim(long),
-        // trimmedLat = weatherDataEarth.numberTrim(lat)
-    weatherDataEarth.fetchEarthData(lat,long)
+    let long = document.querySelector('#longitude').value
+    let lat = document.querySelector('#latitude').value
+
+    let trimmedLong = weatherDataEarth.numberTrim(long)
+    let trimmedLat = weatherDataEarth.numberTrim(lat)
+
+    weatherDataEarth.fetchEarthData(trimmedLat, trimmedLong)
 })
+
+
+
+
+
+
 // https://maas2.apollorion.com/#/Latest/get_
 // used wesite for mars data
 
