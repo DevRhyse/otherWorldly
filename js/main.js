@@ -5,6 +5,9 @@ const localPressureDOM = document.querySelector('#localPressure')
 const marsMinDOM = document.querySelector('#marsMin')
 const marsMaxDOM = document.querySelector('#marsMax')
 const marsPressureDOM = document.querySelector('#marsPressure')
+const enteredMinDOM = document.querySelector('#enteredMin')
+const enteredMaxDOM = document.querySelector('#enteredMax')
+const enteredPressureDOM = document.querySelector('#enteredPressure')
 
 class WeatherData {
 
@@ -55,9 +58,9 @@ class WeatherData {
     }
 
     setMarsDataIntoDOM() {
-        marsMinDOM.innerText = this.marsMinTemp
-        marsMaxDOM.innerText = this.marsMaxTemp
-        marsPressureDOM.innerText = this.marsPressure
+        marsMinDOM.innerText += `  ${this.marsMinTemp}c`
+        marsMaxDOM.innerText += `  ${this.marsMaxTemp}c`
+        marsPressureDOM.innerText += `  ${this.marsPressure}`
     }
 
     setLocalWeather(latestMax, latestMin, latestPressure) {
@@ -68,9 +71,9 @@ class WeatherData {
     }
 
     setLocalDataIntoDOM() {
-        localMinDOM.innerText = this.localMinTemp
-        localMaxDOM.innerText = this.localMaxTemp
-        localPressureDOM.innerText = this.localPressure
+        localMinDOM.innerText += `  ${this.localMinTemp}c`
+        localMaxDOM.innerText += `  ${this.localMaxTemp}c`
+        localPressureDOM.innerText += `  ${this.localPressure}`
     }
 
     numberTrim(num) {
