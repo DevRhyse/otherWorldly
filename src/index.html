@@ -19,7 +19,7 @@
 		<section class="grid grid-cols-5 grid-rows-2 justify-items-stretch">
 			<section class="row-start-1 col-start-3 grid grid-rows-2 grid-cols-4 gap-0 justify-items-center">
 				<h2 class="row-start-1 col-span-4">Enter latitude and longitude for any earth weather</h2>
-				<section class="row-start-2 col-span-4 w-96 h-16 border-solid border-2 border-sky-500 grid grid-rows-2 grid-cols-6 gap-0">
+				<section class="row-start-2 col-span-4 w-96 h-16 border-solid border-2 border-sky-500 grid grid-rows-2 grid-cols-6 gap-0 rounded-lg">
 					<div class="col-start-3 col-span-6">
 						<button id="startEarth" type="button" name="button" class="border-solid border-2 border-sky-500">Get Earth Weather</button>
 					</div>
@@ -28,22 +28,25 @@
 						<input id="longitude" type="number" name="" value="" maxlength="6" placeholder="longitude" class="border-solid border-2 border-sky-500">
 					</div>
 				</section>
+				<div class="col-start-3 col-span-6">
+					<button id="startMars" type="button" name="button" class="border-solid border-2 border-sky-500">Get Mars Weather</button>
+				</div>
 			</section>
 			<!-- <button id="startMars" type="button" name="button" class="border-solid border-2 border-sky-500">Get Mars Weather</button> -->
 			<section class="row-start-3 col-span-5 gap-5 mx-16 grid grid-flow-row grid-cols-5">
-				<section>
+				<section class="border-solid border-2 border-sky-500">
 					<h2>Mars Weather</h2>
 					<span id="marsMax">Maximum Temperature:</span>
 					<span id="marsMin">Minimum Temperature:</span>
 					<span id="marsPressure">Pressure:</span>
 				</section>
-				<section>
+				<section class="border-solid border-2 border-sky-500">
 					<h2>Local Weather</h2>
 					<span id="localMax">Maximum Temperature:</span>
 					<span id="localMin">Minimum Temperature:</span>
 					<span id="localPressure">Pressure:</span>
 				</section>
-				<section>
+				<section class="border-solid border-2 border-sky-500">
 					<h2>Entered Weather</h2>
 					<span id="enteredMax">Maximum Temperature:</span>
 					<span id="enteredMin">Minimum Temperature:</span>

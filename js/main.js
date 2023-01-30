@@ -10,95 +10,49 @@ const enteredMaxDOM = document.querySelector('#enteredMax')
 const enteredPressureDOM = document.querySelector('#enteredPressure')
 
 class WeatherData {
-
-    constructor() {
-        this.localMinTemp = ''
-        this.localMaxTemp = ''
-        this.localPressure = ''
-        this.marsMaxTemp = ''
-        this.marsMinTemp = ''
-        this.marsPressure = ''
+    
+    constructor(minimum, maximum, pressure) {
+        this.minimumTemperature = minimum
+        this.maximumTemperature = maximum
+        this.pressure = pressure
     }
-
-    async fetchMarsData() {
-        const talkingPoint = "https://api.maas2.apollorion.com/"
-        const APIobject = await fetch(talkingPoint)
-
-        if (APIobject.status !== 200) {
-            console.log(`Error: ${APIobject.status}`)
-        } else {
-            let APIresult = await APIobject.json()
-            console.log(APIresult)
-            this.setMarsWeather(APIresult.max_temp, APIresult.min_temp, APIresult.pressure)
-        }
-    }
-
+    
+    
     async fetchEarthData(latitude, longitude) {
         const APIkey = 'c01863ea5cc73a1143508657512cc6e1'
         const latAndLong = `lat=${latitude}&lon=${longitude}`
         const talkingPoint = `https://api.openweathermap.org/data/2.5/weather?${latAndLong}&appid=${APIkey}&units=metric`
-
+        
         console.log(talkingPoint)
-
+        
         let APIobject = await fetch(talkingPoint)
         if (APIobject.status !== 200) {
             console.log(`Error: ${APIobject.status}`)
         } else {
             let APIresult = await APIobject.json()
             console.log(APIresult)
-            this.setLocalWeather(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure)
+            this.setWeatherVariables(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure)
         }
     }
-
-    setMarsWeather(latestMax, latestMin, latestPressure) {
-        this.marsMaxTemp = latestMax
-        this.marsMinTemp = latestMin
-        this.marsPressure = latestPressure
-        this.setMarsDataIntoDOM()
+    
+    setWeatherVariables(latestMax, latestMin, latestPressure) {
+        this.maximum = latestMax
+        this.minimum = latestMin
+        this.pressure = latestPressure
+        this.setDataIntoDOM()
     }
-
-    setMarsDataIntoDOM() {
-        marsMinDOM.innerText += `  ${this.marsMinTemp}c`
-        marsMaxDOM.innerText += `  ${this.marsMaxTemp}c`
-        marsPressureDOM.innerText += `  ${this.marsPressure}`
+    
+    
+    setDataIntoDOM() {
+        enteredMinDOM.innerText += `  ${this.minimum}c`
+        enteredMaxDOM.innerText += `  ${this.maximum}c`
+        enteredPressureDOM.innerText += `  ${this.pressure}`
     }
-
-    setLocalWeather(latestMax, latestMin, latestPressure) {
-        this.localMaxTemp = latestMax
-        this.localMinTemp = latestMin
-        this.localPressure = latestPressure
-        this.setLocalDataIntoDOM()
-    }
-
-    setLocalDataIntoDOM() {
-        localMinDOM.innerText += `  ${this.localMinTemp}c`
-        localMaxDOM.innerText += `  ${this.localMaxTemp}c`
-        localPressureDOM.innerText += `  ${this.localPressure}`
-    }
-
+    
     numberTrim(num) {
         return num[0] == '-' ? num.slice(0, 6) : num.slice(0, 5)
     }
 }
-
-if ('geolocation' in navigator) {
-    console.log('geolocation is available')
-}else{
-    console.log("geolocation IS NOT available")
-}
-
-navigator.geolocation.getCurrentPosition((position) => {
-    const weatherDataLocal = new WeatherData()
-
-    weatherDataLocal.fetchEarthData(position.coords.latitude, position.coords.longitude)
-})
-
-document.querySelector('#startMars').addEventListener('click', () => {
-    const weatherDataMars = new WeatherData()
-
-    weatherDataMars.fetchMarsData()
-})
-
 document.querySelector('#startEarth').addEventListener('click', () => {
     const weatherDataEarth = new WeatherData()
     let long = document.querySelector('#longitude').value
@@ -109,6 +63,95 @@ document.querySelector('#startEarth').addEventListener('click', () => {
 
     weatherDataEarth.fetchEarthData(trimmedLat, trimmedLong)
 })
+
+
+class MarsWeather extends WeatherData{
+    constructor(minimum, maximum, pressure){
+        super(minimum, maximum, pressure)
+    }
+    
+    async fetchMarsData() {
+        const talkingPoint = "https://api.maas2.apollorion.com/"
+        const APIobject = await fetch(talkingPoint)
+        
+        if (APIobject.status !== 200) {
+            console.log(`Error: ${APIobject.status}`)
+        } else {
+            let APIresult = await APIobject.json()
+            console.log(APIresult)
+            this.setMarsWeather(APIresult.max_temp, APIresult.min_temp, APIresult.pressure)
+        }
+    }
+    
+    setMarsWeather(latestMax, latestMin, latestPressure) {
+        this.maximum = latestMax
+        this.minimum = latestMin
+        this.pressure = latestPressure
+        this.setMarsDataIntoDOM()
+    }
+    
+    setMarsDataIntoDOM() {
+        marsMinDOM.innerText += `  ${this.minimum}c`
+        marsMaxDOM.innerText += `  ${this.maximum}c`
+        marsPressureDOM.innerText += `  ${this.pressure}`
+    }    
+}
+
+document.querySelector('#startMars').addEventListener('click', () => {
+    const weatherDataMars = new MarsWeather()
+
+    weatherDataMars.fetchMarsData()
+})
+
+class LocalWeather extends WeatherData{
+    constructor(minimum, maximum, pressure){
+        super(minimum, maximum, pressure)
+    }
+    async fetchLocalEarthData(latitude, longitude) {
+        const APIkey = 'c01863ea5cc73a1143508657512cc6e1'
+        const latAndLong = `lat=${latitude}&lon=${longitude}`
+        const talkingPoint = `https://api.openweathermap.org/data/2.5/weather?${latAndLong}&appid=${APIkey}&units=metric`
+        
+        console.log(talkingPoint)
+        
+        let APIobject = await fetch(talkingPoint)
+        if (APIobject.status !== 200) {
+            console.log(`Error: ${APIobject.status}`)
+        } else {
+            let APIresult = await APIobject.json()
+            console.log(APIresult)
+            this.setLocalWeather(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure)
+        }
+    }
+    
+    setLocalWeather(latestMax, latestMin, latestPressure) {
+        this.maximum = latestMax
+        this.minimum = latestMin
+        this.pressure = latestPressure
+        this.setLocalDataIntoDOM()
+    }
+    
+    
+    setLocalDataIntoDOM() {
+        localMaxDOM.innerText += `  ${this.maximum}c`
+        localMinDOM.innerText += `  ${this.minimum}c`
+        localPressureDOM.innerText += `  ${this.pressure}`
+    }
+
+}
+if ('geolocation' in navigator) {
+    console.log('geolocation is available')
+}else{
+    console.log("geolocation IS NOT available")
+}
+
+navigator.geolocation.getCurrentPosition((position) => {
+    const weatherDataLocal = new LocalWeather()
+    
+    weatherDataLocal.fetchLocalEarthData(position.coords.latitude, position.coords.longitude)
+})
+
+
 
 
 
