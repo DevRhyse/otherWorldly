@@ -9,6 +9,14 @@ const enteredMinDOM = document.querySelector('#enteredMin')
 const enteredMaxDOM = document.querySelector('#enteredMax')
 const enteredPressureDOM = document.querySelector('#enteredPressure')
 
+// Checks for Geolocation API in Browser
+if ('geolocation' in navigator) {
+    console.log('geolocation is available')
+}else{
+    console.log("geolocation IS NOT available")
+}
+
+// Class is used to gather Earth Weather Data
 class WeatherData {
     
     constructor(minimum, maximum, pressure) {
@@ -53,6 +61,7 @@ class WeatherData {
         return num[0] == '-' ? num.slice(0, 6) : num.slice(0, 5)
     }
 }
+// Eventlistener to gather weather of the entered variables of users and display to DOM
 document.querySelector('#startEarth').addEventListener('click', () => {
     const weatherDataEarth = new WeatherData()
     let long = document.querySelector('#longitude').value
@@ -64,7 +73,7 @@ document.querySelector('#startEarth').addEventListener('click', () => {
     weatherDataEarth.fetchEarthData(trimmedLat, trimmedLong)
 })
 
-
+// This class is used to gather the latest Mars data from the rover
 class MarsWeather extends WeatherData{
     constructor(minimum, maximum, pressure){
         super(minimum, maximum, pressure)
@@ -96,13 +105,14 @@ class MarsWeather extends WeatherData{
         marsPressureDOM.innerText += `  ${this.pressure}`
     }    
 }
-
+//Eventlistener to start Mars data collection
 document.querySelector('#startMars').addEventListener('click', () => {
     const weatherDataMars = new MarsWeather()
 
     weatherDataMars.fetchMarsData()
 })
 
+// This class is for using the Geolocation API to gather and display local weather
 class LocalWeather extends WeatherData{
     constructor(minimum, maximum, pressure){
         super(minimum, maximum, pressure)
@@ -139,16 +149,13 @@ class LocalWeather extends WeatherData{
     }
 
 }
-if ('geolocation' in navigator) {
-    console.log('geolocation is available')
-}else{
-    console.log("geolocation IS NOT available")
-}
-
-navigator.geolocation.getCurrentPosition((position) => {
-    const weatherDataLocal = new LocalWeather()
-    
-    weatherDataLocal.fetchLocalEarthData(position.coords.latitude, position.coords.longitude)
+// Event Listener to start Local Weather
+document.querySelector('#gatherLocal').addEventListener('click', () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+        const weatherDataLocal = new LocalWeather()
+        
+        weatherDataLocal.fetchLocalEarthData(position.coords.latitude, position.coords.longitude)
+    })
 })
 
 
