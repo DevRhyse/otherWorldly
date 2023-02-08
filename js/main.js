@@ -1,4 +1,3 @@
-
 const localMinDOM = document.querySelector('#localMin')
 const localMaxDOM = document.querySelector('#localMax')
 const localPressureDOM = document.querySelector('#localPressure')
@@ -8,6 +7,7 @@ const marsPressureDOM = document.querySelector('#marsPressure')
 const enteredMinDOM = document.querySelector('#enteredMin')
 const enteredMaxDOM = document.querySelector('#enteredMax')
 const enteredPressureDOM = document.querySelector('#enteredPressure')
+
 
 // Checks for Geolocation API in Browser
 if ('geolocation' in navigator) {

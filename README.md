@@ -1,13 +1,13 @@
 # Other Worldly Weather App
 This project allows the user to compare the most recent up-to-date weather from Mars against the weather data from any where aroud the world. User can also use local weather from thier IP.
 
-**Link to project:** #
+**Link to project:** https://devrhyse.github.io/otherWorldly/
 
-![alt tag](http://placecorgi.com/1200/650)
+![alt tag]https://devrhyse.github.io/otherWorldly/)
 
 ## How It's Made:
 
-**Tech used:** HTML, CSS, JavaScript, Tailwind
+**Tech used:** HTML, CSS, JavaScript, Tailwind, Nodejs
 
 Bundles together multiple API to gather most recent data from Mars. User can enter latitude and longitude from any where in the world to get weatherData. Visuals built with tailwind
 
@@ -20,6 +20,7 @@ Final product will include React. Mutliple premade weather data will be prerende
 Learned to implement OOP principles.
 API bundling.
 Tailwind implamentation.
+Node
 
 
 ## Examples:
