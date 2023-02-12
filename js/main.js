@@ -1,12 +1,4 @@
-const localMinDOM = document.querySelector('#localMin')
-const localMaxDOM = document.querySelector('#localMax')
-const localPressureDOM = document.querySelector('#localPressure')
-const marsMinDOM = document.querySelector('#marsMin')
-const marsMaxDOM = document.querySelector('#marsMax')
-const marsPressureDOM = document.querySelector('#marsPressure')
-const enteredMinDOM = document.querySelector('#enteredMin')
-const enteredMaxDOM = document.querySelector('#enteredMax')
-const enteredPressureDOM = document.querySelector('#enteredPressure')
+const weatherBox = document.querySelector('#weatherDisplay')
 
 
 // Checks for Geolocation API in Browser
@@ -19,10 +11,12 @@ if ('geolocation' in navigator) {
 // Class is used to gather Earth Weather Data
 class WeatherData {
     
-    constructor(minimum, maximum, pressure) {
+    constructor(minimum, maximum, pressure, location, windSpeed) {
         this.minimumTemperature = minimum
         this.maximumTemperature = maximum
         this.pressure = pressure
+        this.location = location
+        this.windSpeed = windSpeed
     }
     
     
@@ -38,23 +32,53 @@ class WeatherData {
             console.log(`Error: ${APIobject.status}`)
         } else {
             let APIresult = await APIobject.json()
+            console.log(APIresult.wind['speed'])
             console.log(APIresult)
-            this.setWeatherVariables(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure)
+            this.setWeatherVariables(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure, latAndLong, APIresult.wind['speed'])
         }
     }
     
-    setWeatherVariables(latestMax, latestMin, latestPressure) {
+    setWeatherVariables(latestMax, latestMin, latestPressure, location, windSpeed) {
         this.maximum = latestMax
         this.minimum = latestMin
         this.pressure = latestPressure
-        this.setDataIntoDOM()
+        this.location = location
+        if(windSpeed === null){
+            this.windSpeed = 'Unavailable'
+        }else{
+            this.windSpeed = windSpeed
+        }
+        this.createNewWeatherDisplay()
     }
-    
-    
-    setDataIntoDOM() {
-        enteredMinDOM.innerText += `  ${this.minimum}c`
-        enteredMaxDOM.innerText += `  ${this.maximum}c`
-        enteredPressureDOM.innerText += `  ${this.pressure}`
+
+    createNewWeatherDisplay(){
+        const enteredWeatherBox = document.createElement('section')
+        enteredWeatherBox.classList.add('border-solid', 'border-2','border-sky-500')
+
+        const header = document.createElement('h2')
+        header.innerText = `${this.location}`
+
+        const maximumTemp = document.createElement('span')
+        maximumTemp.innerText = `Maximum Temperature:  ${this.maximum}c \n`
+
+        const minimumTemp = document.createElement('span')
+        minimumTemp.innerText = `Minimum Temperature:  ${this.minimum}c \n`
+
+        const pressureDisplay = document.createElement('span')
+        pressureDisplay.innerText = `Atmospheric Pressure:  ${this.pressure} \n`
+        
+        const windSpeedDisplay = document.createElement('span')
+        windSpeedDisplay.innerText = `Wind Speed:  ${this.windSpeed}`
+
+        enteredWeatherBox.appendChild(header)
+        enteredWeatherBox.appendChild(maximumTemp)
+        enteredWeatherBox.appendChild(minimumTemp)
+        enteredWeatherBox.appendChild(pressureDisplay)
+        enteredWeatherBox.appendChild(windSpeedDisplay)
+
+        weatherBox.appendChild(enteredWeatherBox)
+
+        enteredWeatherBox.addEventListener('click', () => {weatherBox.removeChild(enteredWeatherBox)})
     }
     
     numberTrim(num) {
@@ -75,8 +99,8 @@ document.querySelector('#startEarth').addEventListener('click', () => {
 
 // This class is used to gather the latest Mars data from the rover
 class MarsWeather extends WeatherData{
-    constructor(minimum, maximum, pressure){
-        super(minimum, maximum, pressure)
+    constructor(minimum, maximum, pressure, location, windSpeed){
+        super(minimum, maximum, pressure, location, windSpeed)
     }
     
     async fetchMarsData() {
@@ -88,34 +112,25 @@ class MarsWeather extends WeatherData{
         } else {
             let APIresult = await APIobject.json()
             console.log(APIresult)
-            this.setMarsWeather(APIresult.max_temp, APIresult.min_temp, APIresult.pressure)
+            this.setMarsWeather(APIresult.max_temp, APIresult.min_temp, APIresult.pressure, 'Mars Weather', APIresult.wind_speed)
         }
     }
     
-    setMarsWeather(latestMax, latestMin, latestPressure) {
-        this.maximum = latestMax
-        this.minimum = latestMin
-        this.pressure = latestPressure
-        this.setMarsDataIntoDOM()
+    setMarsWeather(latestMax, latestMin, latestPressure, location, windSpeed) {
+        return super.setWeatherVariables(latestMax, latestMin, latestPressure, location, windSpeed)
     }
-    
-    setMarsDataIntoDOM() {
-        marsMinDOM.innerText += `  ${this.minimum}c`
-        marsMaxDOM.innerText += `  ${this.maximum}c`
-        marsPressureDOM.innerText += `  ${this.pressure}`
-    }    
 }
 //Eventlistener to start Mars data collection
 document.querySelector('#startMars').addEventListener('click', () => {
     const weatherDataMars = new MarsWeather()
-
+    
     weatherDataMars.fetchMarsData()
 })
 
 // This class is for using the Geolocation API to gather and display local weather
 class LocalWeather extends WeatherData{
-    constructor(minimum, maximum, pressure){
-        super(minimum, maximum, pressure)
+    constructor(minimum, maximum, pressure, location, windSpeed){
+        super(minimum, maximum, pressure, location, windSpeed)
     }
     async fetchLocalEarthData(latitude, longitude) {
         const APIkey = 'c01863ea5cc73a1143508657512cc6e1'
@@ -130,24 +145,14 @@ class LocalWeather extends WeatherData{
         } else {
             let APIresult = await APIobject.json()
             console.log(APIresult)
-            this.setLocalWeather(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure)
+            this.setLocalWeather(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure, APIresult.wind['speed'], 'Local Weather')
         }
     }
     
-    setLocalWeather(latestMax, latestMin, latestPressure) {
-        this.maximum = latestMax
-        this.minimum = latestMin
-        this.pressure = latestPressure
-        this.setLocalDataIntoDOM()
+    setLocalWeather(latestMax, latestMin, latestPressure, windSpeed, location) {
+        super.setWeatherVariables(latestMax, latestMin, latestPressure, location, windSpeed)
     }
     
-    
-    setLocalDataIntoDOM() {
-        localMaxDOM.innerText += `  ${this.maximum}c`
-        localMinDOM.innerText += `  ${this.minimum}c`
-        localPressureDOM.innerText += `  ${this.pressure}`
-    }
-
 }
 // Event Listener to start Local Weather
 document.querySelector('#gatherLocal').addEventListener('click', () => {
@@ -157,7 +162,6 @@ document.querySelector('#gatherLocal').addEventListener('click', () => {
         weatherDataLocal.fetchLocalEarthData(position.coords.latitude, position.coords.longitude)
     })
 })
-
 
 
 
