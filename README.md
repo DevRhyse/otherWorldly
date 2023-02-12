@@ -1,9 +1,9 @@
 # Other Worldly Weather App
 This project allows the user to compare the most recent up-to-date weather from Mars against the weather data from any where aroud the world. User can also use local weather from thier IP.
 
-**Link to project:** https://devrhyse.github.io/otherWorldly/
+**Link to project:** https://otherworldyweather.netlify.app/
 
-![alt tag]https://devrhyse.github.io/otherWorldly/)
+![alt tag]https://otherworldyweather.netlify.app/)
 
 ## How It's Made:
 
