@@ -37,7 +37,7 @@
 				<button class="border-solid border-2 border-sky-500" id="gatherLocal" type="button">Get Local Weather</button>
 			</section>
 			<!-- <button id="startMars" type="button" name="button" class="border-solid border-2 border-sky-500">Get Mars Weather</button> -->
-			<section class="row-start-3 col-span-5 gap-5 mx-16 grid grid-flow-row grid-cols-5">
+			<section id="weatherDisplay" class="row-start-3 col-span-5 gap-5 mx-16 grid grid-flow-row grid-cols-5">
 				<section class="border-solid border-2 border-sky-500">
 					<h2>Mars Weather</h2>
 					<span id="marsMax">Maximum Temperature:</span>
@@ -51,7 +51,7 @@
 					<span id="localPressure">Pressure:</span>
 				</section>
 				<section class="border-solid border-2 border-sky-500">
-					<h2>Entered Weather</h2>
+					<h2 id="enteredWeather">Entered Weather</h2>
 					<span id="enteredMax">Maximum Temperature:</span>
 					<span id="enteredMin">Minimum Temperature:</span>
 					<span id="enteredPressure">Pressure:</span>
