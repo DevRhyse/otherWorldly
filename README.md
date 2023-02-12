@@ -3,7 +3,7 @@ This project allows the user to compare the most recent up-to-date weather from 
 
 **Link to project:** https://otherworldyweather.netlify.app/
 
-![alt tag]https://otherworldyweather.netlify.app/)
+![alt tag](https://otherworldyweather.netlify.app/)
 
 ## How It's Made:
 
@@ -13,7 +13,7 @@ Bundles together multiple API to gather most recent data from Mars. User can ent
 
 ## Optimizations
 
-Final product will include React. Mutliple premade weather data will be prerendered. Entered Lat and Long will create new display. After number of created displays older displays will be removed. Caching system will be included and mars data will cached only on update.
+Final product will include React. Multiple premade weather data will be prerendered. Caching system will be included and mars data will cached only on update.
 
 ## Lessons Learned:
 
