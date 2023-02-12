@@ -23,39 +23,23 @@
 					<div class="col-start-3 col-span-6">
 						<button id="startEarth" type="button" name="button" class="border-solid border-2 border-sky-500">Get Earth Weather</button>
 					</div>
-					<div class="col-start-1 col-span-6">
+					<div class="col-start-1 col-span-6 text-black">
 						<input id="latitude" type="number" name="" value="" maxlength="6" placeholder="latitude" class="border-solid border-2 border-sky-500">
 						<input id="longitude" type="number" name="" value="" maxlength="6" placeholder="longitude" class="border-solid border-2 border-sky-500">
 					</div>
 				</section>
-				<div class="col-start-3 col-span-6">
-					<button id="startMars" type="button" name="button" class="border-solid border-2 border-sky-500">Get Mars Weather</button>
-				</div>
+				<p class="col-start-1 col-span-6">Click any component to remove it</p>
 			</section>
 			<section class="grid row-start-1 col-start-1 text-slate-50 ml-10 t">
 				<h2 class="text-center">This button will ask you for your IP address, this uses geolocation API to gather your local weather for comparision and isn't saved.</h2>
 				<button class="border-solid border-2 border-sky-500" id="gatherLocal" type="button">Get Local Weather</button>
 			</section>
+			<div class="grid col-start-5 col-span-6 mr-10">
+				<h2 class="text-center">This button will show you the most recent weather from the Mars rover 'Curiousity'</h2>
+				<button id="startMars" type="button" name="button" class="border-solid border-2 border-sky-500">Get Mars Weather</button>
+			</div>
 			<!-- <button id="startMars" type="button" name="button" class="border-solid border-2 border-sky-500">Get Mars Weather</button> -->
-			<section id="weatherDisplay" class="row-start-3 col-span-5 gap-5 mx-16 grid grid-flow-row grid-cols-5">
-				<section class="border-solid border-2 border-sky-500">
-					<h2>Mars Weather</h2>
-					<span id="marsMax">Maximum Temperature:</span>
-					<span id="marsMin">Minimum Temperature:</span>
-					<span id="marsPressure">Pressure:</span>
-				</section>
-				<section class="border-solid border-2 border-sky-500">
-					<h2>Local Weather</h2>
-					<span id="localMax">Maximum Temperature:</span>
-					<span id="localMin">Minimum Temperature:</span>
-					<span id="localPressure">Pressure:</span>
-				</section>
-				<section class="border-solid border-2 border-sky-500">
-					<h2 id="enteredWeather">Entered Weather</h2>
-					<span id="enteredMax">Maximum Temperature:</span>
-					<span id="enteredMin">Minimum Temperature:</span>
-					<span id="enteredPressure">Pressure:</span>
-				</section>
+			<section id="weatherDisplay" class="row-start-3 col-span-5 gap-5 mx-16 grid grid-flow-row grid-cols-5 text-center">
 			</section>
 		</section>
 		<script type="text/javascript" src="../js/main.js"></script>
