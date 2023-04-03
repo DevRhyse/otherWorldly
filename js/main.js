@@ -1,167 +1,176 @@
-const weatherBox = document.querySelector('#weatherDisplay')
+// import React from 'react'
+// import ReactDOM from 'react-dom'
+// import App from '../App'
+
+// const root = document.getElementById('root')
+
+// ReactDOM.render(<App/>, root)
 
 
-// Checks for Geolocation API in Browser
-if ('geolocation' in navigator) {
-    console.log('geolocation is available')
-}else{
-    console.log("geolocation IS NOT available")
-}
+// const weatherBox = document.querySelector('#weatherDisplay')
 
-// Class is used to gather Earth Weather Data
-class WeatherData {
+
+// // Checks for Geolocation API in Browser
+// if ('geolocation' in navigator) {
+//     console.log('geolocation is available')
+// }else{
+//     console.log("geolocation IS NOT available")
+// }
+
+// // Class is used to gather Earth Weather Data
+// class WeatherData {
     
-    constructor(minimum, maximum, pressure, location, windSpeed) {
-        this.minimumTemperature = minimum
-        this.maximumTemperature = maximum
-        this.pressure = pressure
-        this.location = location
-        this.windSpeed = windSpeed
-    }
+//     constructor(minimum, maximum, pressure, location, windSpeed) {
+//         this.minimumTemperature = minimum
+//         this.maximumTemperature = maximum
+//         this.pressure = pressure
+//         this.location = location
+//         this.windSpeed = windSpeed
+//     }
     
     
-    async fetchEarthData(latitude, longitude) {
-        const APIkey = 'c01863ea5cc73a1143508657512cc6e1'
-        const latAndLong = `lat=${latitude}&lon=${longitude}`
-        const talkingPoint = `https://api.openweathermap.org/data/2.5/weather?${latAndLong}&appid=${APIkey}&units=metric`
+//     async fetchEarthData(latitude, longitude) {
+//         const APIkey = 'c01863ea5cc73a1143508657512cc6e1'
+//         const latAndLong = `lat=${latitude}&lon=${longitude}`
+//         const talkingPoint = `https://api.openweathermap.org/data/2.5/weather?${latAndLong}&appid=${APIkey}&units=metric`
         
-        console.log(talkingPoint)
+//         console.log(talkingPoint)
         
-        let APIobject = await fetch(talkingPoint)
-        if (APIobject.status !== 200) {
-            console.log(`Error: ${APIobject.status}`)
-        } else {
-            let APIresult = await APIobject.json()
-            console.log(APIresult.wind['speed'])
-            console.log(APIresult)
-            this.setWeatherVariables(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure, latAndLong, APIresult.wind['speed'])
-        }
-    }
+//         let APIobject = await fetch(talkingPoint)
+//         if (APIobject.status !== 200) {
+//             console.log(`Error: ${APIobject.status}`)
+//         } else {
+//             let APIresult = await APIobject.json()
+//             console.log(APIresult.wind['speed'])
+//             console.log(APIresult)
+//             this.setWeatherVariables(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure, latAndLong, APIresult.wind['speed'])
+//         }
+//     }
     
-    setWeatherVariables(latestMax, latestMin, latestPressure, location, windSpeed) {
-        this.maximum = latestMax
-        this.minimum = latestMin
-        this.pressure = latestPressure
-        this.location = location
-        if(windSpeed === null){
-            this.windSpeed = 'Unavailable'
-        }else{
-            this.windSpeed = windSpeed
-        }
-        this.createNewWeatherDisplay()
-    }
+//     setWeatherVariables(latestMax, latestMin, latestPressure, location, windSpeed) {
+//         this.maximum = latestMax
+//         this.minimum = latestMin
+//         this.pressure = latestPressure
+//         this.location = location
+//         if(windSpeed === null){
+//             this.windSpeed = 'Unavailable'
+//         }else{
+//             this.windSpeed = windSpeed
+//         }
+//         this.createNewWeatherDisplay()
+//     }
 
-    createNewWeatherDisplay(){
-        const enteredWeatherBox = document.createElement('section')
-        enteredWeatherBox.classList.add('border-solid', 'border-2','border-sky-500')
+//     createNewWeatherDisplay(){
+//         const enteredWeatherBox = document.createElement('section')
+//         enteredWeatherBox.classList.add('border-solid', 'border-2','border-sky-500')
 
-        const header = document.createElement('h2')
-        header.innerText = `${this.location}`
+//         const header = document.createElement('h2')
+//         header.innerText = `${this.location}`
 
-        const maximumTemp = document.createElement('span')
-        maximumTemp.innerText = `Maximum Temperature:  ${this.maximum}c \n`
+//         const maximumTemp = document.createElement('span')
+//         maximumTemp.innerText = `Maximum Temperature:  ${this.maximum}c \n`
 
-        const minimumTemp = document.createElement('span')
-        minimumTemp.innerText = `Minimum Temperature:  ${this.minimum}c \n`
+//         const minimumTemp = document.createElement('span')
+//         minimumTemp.innerText = `Minimum Temperature:  ${this.minimum}c \n`
 
-        const pressureDisplay = document.createElement('span')
-        pressureDisplay.innerText = `Atmospheric Pressure:  ${this.pressure} \n`
+//         const pressureDisplay = document.createElement('span')
+//         pressureDisplay.innerText = `Atmospheric Pressure:  ${this.pressure} \n`
         
-        const windSpeedDisplay = document.createElement('span')
-        windSpeedDisplay.innerText = `Wind Speed:  ${this.windSpeed}`
+//         const windSpeedDisplay = document.createElement('span')
+//         windSpeedDisplay.innerText = `Wind Speed:  ${this.windSpeed}`
 
-        enteredWeatherBox.appendChild(header)
-        enteredWeatherBox.appendChild(maximumTemp)
-        enteredWeatherBox.appendChild(minimumTemp)
-        enteredWeatherBox.appendChild(pressureDisplay)
-        enteredWeatherBox.appendChild(windSpeedDisplay)
+//         enteredWeatherBox.appendChild(header)
+//         enteredWeatherBox.appendChild(maximumTemp)
+//         enteredWeatherBox.appendChild(minimumTemp)
+//         enteredWeatherBox.appendChild(pressureDisplay)
+//         enteredWeatherBox.appendChild(windSpeedDisplay)
 
-        weatherBox.appendChild(enteredWeatherBox)
+//         weatherBox.appendChild(enteredWeatherBox)
 
-        enteredWeatherBox.addEventListener('click', () => {weatherBox.removeChild(enteredWeatherBox)})
-    }
+//         enteredWeatherBox.addEventListener('click', () => {weatherBox.removeChild(enteredWeatherBox)})
+//     }
     
-    numberTrim(num) {
-        return num[0] == '-' ? num.slice(0, 6) : num.slice(0, 5)
-    }
-}
-// Eventlistener to gather weather of the entered variables of users and display to DOM
-document.querySelector('#startEarth').addEventListener('click', () => {
-    const weatherDataEarth = new WeatherData()
-    let long = document.querySelector('#longitude').value
-    let lat = document.querySelector('#latitude').value
+//     numberTrim(num) {
+//         return num[0] == '-' ? num.slice(0, 6) : num.slice(0, 5)
+//     }
+// }
+// // Eventlistener to gather weather of the entered variables of users and display to DOM
+// document.querySelector('#startEarth').addEventListener('click', () => {
+//     const weatherDataEarth = new WeatherData()
+//     let long = document.querySelector('#longitude').value
+//     let lat = document.querySelector('#latitude').value
 
-    let trimmedLong = weatherDataEarth.numberTrim(long)
-    let trimmedLat = weatherDataEarth.numberTrim(lat)
+//     let trimmedLong = weatherDataEarth.numberTrim(long)
+//     let trimmedLat = weatherDataEarth.numberTrim(lat)
 
-    weatherDataEarth.fetchEarthData(trimmedLat, trimmedLong)
-})
+//     weatherDataEarth.fetchEarthData(trimmedLat, trimmedLong)
+// })
 
-// This class is used to gather the latest Mars data from the rover
-class MarsWeather extends WeatherData{
-    constructor(minimum, maximum, pressure, location, windSpeed){
-        super(minimum, maximum, pressure, location, windSpeed)
-    }
+// // This class is used to gather the latest Mars data from the rover
+// class MarsWeather extends WeatherData{
+//     constructor(minimum, maximum, pressure, location, windSpeed){
+//         super(minimum, maximum, pressure, location, windSpeed)
+//     }
     
-    async fetchMarsData() {
-        const talkingPoint = "https://api.maas2.apollorion.com/"
-        const APIobject = await fetch(talkingPoint)
+//     async fetchMarsData() {
+//         const talkingPoint = "https://api.maas2.apollorion.com/"
+//         const APIobject = await fetch(talkingPoint)
         
-        if (APIobject.status !== 200) {
-            console.log(`Error: ${APIobject.status}`)
-        } else {
-            let APIresult = await APIobject.json()
-            console.log(APIresult)
-            this.setMarsWeather(APIresult.max_temp, APIresult.min_temp, APIresult.pressure, 'Mars Weather', APIresult.wind_speed)
-        }
-    }
+//         if (APIobject.status !== 200) {
+//             console.log(`Error: ${APIobject.status}`)
+//         } else {
+//             let APIresult = await APIobject.json()
+//             console.log(APIresult)
+//             this.setMarsWeather(APIresult.max_temp, APIresult.min_temp, APIresult.pressure, 'Mars Weather', APIresult.wind_speed)
+//         }
+//     }
     
-    setMarsWeather(latestMax, latestMin, latestPressure, location, windSpeed) {
-        return super.setWeatherVariables(latestMax, latestMin, latestPressure, location, windSpeed)
-    }
-}
-//Eventlistener to start Mars data collection
-document.querySelector('#startMars').addEventListener('click', () => {
-    const weatherDataMars = new MarsWeather()
+//     setMarsWeather(latestMax, latestMin, latestPressure, location, windSpeed) {
+//         return super.setWeatherVariables(latestMax, latestMin, latestPressure, location, windSpeed)
+//     }
+// }
+// //Eventlistener to start Mars data collection
+// document.querySelector('#startMars').addEventListener('click', () => {
+//     const weatherDataMars = new MarsWeather()
     
-    weatherDataMars.fetchMarsData()
-})
+//     weatherDataMars.fetchMarsData()
+// })
 
-// This class is for using the Geolocation API to gather and display local weather
-class LocalWeather extends WeatherData{
-    constructor(minimum, maximum, pressure, location, windSpeed){
-        super(minimum, maximum, pressure, location, windSpeed)
-    }
-    async fetchLocalEarthData(latitude, longitude) {
-        const APIkey = 'c01863ea5cc73a1143508657512cc6e1'
-        const latAndLong = `lat=${latitude}&lon=${longitude}`
-        const talkingPoint = `https://api.openweathermap.org/data/2.5/weather?${latAndLong}&appid=${APIkey}&units=metric`
+// // This class is for using the Geolocation API to gather and display local weather
+// class LocalWeather extends WeatherData{
+//     constructor(minimum, maximum, pressure, location, windSpeed){
+//         super(minimum, maximum, pressure, location, windSpeed)
+//     }
+//     async fetchLocalEarthData(latitude, longitude) {
+//         const APIkey = 'c01863ea5cc73a1143508657512cc6e1'
+//         const latAndLong = `lat=${latitude}&lon=${longitude}`
+//         const talkingPoint = `https://api.openweathermap.org/data/2.5/weather?${latAndLong}&appid=${APIkey}&units=metric`
         
-        console.log(talkingPoint)
+//         console.log(talkingPoint)
         
-        let APIobject = await fetch(talkingPoint)
-        if (APIobject.status !== 200) {
-            console.log(`Error: ${APIobject.status}`)
-        } else {
-            let APIresult = await APIobject.json()
-            console.log(APIresult)
-            this.setLocalWeather(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure, APIresult.wind['speed'], 'Local Weather')
-        }
-    }
+//         let APIobject = await fetch(talkingPoint)
+//         if (APIobject.status !== 200) {
+//             console.log(`Error: ${APIobject.status}`)
+//         } else {
+//             let APIresult = await APIobject.json()
+//             console.log(APIresult)
+//             this.setLocalWeather(APIresult.main.temp_max, APIresult.main.temp_min, APIresult.main.pressure, APIresult.wind['speed'], 'Local Weather')
+//         }
+//     }
     
-    setLocalWeather(latestMax, latestMin, latestPressure, windSpeed, location) {
-        super.setWeatherVariables(latestMax, latestMin, latestPressure, location, windSpeed)
-    }
+//     setLocalWeather(latestMax, latestMin, latestPressure, windSpeed, location) {
+//         super.setWeatherVariables(latestMax, latestMin, latestPressure, location, windSpeed)
+//     }
     
-}
-// Event Listener to start Local Weather
-document.querySelector('#gatherLocal').addEventListener('click', () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-        const weatherDataLocal = new LocalWeather()
+// }
+// // Event Listener to start Local Weather
+// document.querySelector('#gatherLocal').addEventListener('click', () => {
+//     navigator.geolocation.getCurrentPosition((position) => {
+//         const weatherDataLocal = new LocalWeather()
         
-        weatherDataLocal.fetchLocalEarthData(position.coords.latitude, position.coords.longitude)
-    })
-})
+//         weatherDataLocal.fetchLocalEarthData(position.coords.latitude, position.coords.longitude)
+//     })
+// })
 
 
 
