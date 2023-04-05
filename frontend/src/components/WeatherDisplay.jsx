@@ -1,8 +1,15 @@
 import React from 'react'
 
-export default function WeatherDisplay(){
+export function WeatherDisplay(prop){
     return (
-        <section id="weatherDisplay" className="row-start-3 col-span-5 gap-5 mx-16 grid grid-flow-row grid-cols-5 text-center">
+        <section 
+            id="weatherDisplay" 
+            className={prop.placement}>
+                    <span>Location: {prop.location}</span>
+                    <span>Lowest Temperature: {prop.minTemp}</span>
+                    <span>Highest Temperature: {prop.maxTemp}</span>
+                    <span>Atmosphic Pressure: {prop.atPressure}</span>
+                    <span>Wind Speed: {prop.windSpeed}</span>
 		</section>
     )
 }
